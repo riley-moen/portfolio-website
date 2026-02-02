@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riley Moen | Applied Mathematician & Data Scientist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-darker: #050810;
+            --surface: #151b2d;
+            --surface-light: #1f2937;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #10b981;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-dim: #6b7280;
+            --grid-color: rgba(0, 212, 255, 0.15);
+            --glow: rgba(0, 212, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background layers with proper z-indexing */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 1;
+            pointer-events: none;
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 1.5rem 0;
+            animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: rgba(10, 14, 23, 0.98);
+                backdrop-filter: blur(10px);
+                padding: 2rem;
+                border-left: 1px solid rgba(0, 212, 255, 0.2);
+                gap: 1.5rem;
+                transition: right 0.3s ease;
+                height: calc(100vh - 70px);
+                width: 250px;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Header/Hero */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 6rem 0 4rem 0;
+        }
+
+        .hero-content {
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                transform: translateY(30px);
+            }
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+            opacity: 0;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            opacity: 0;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+            opacity: 0;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+            opacity: 0;
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1rem 2.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-dark);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.35);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite, fadeSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+            opacity: 0;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            display: block;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-primary), transparent);
+            margin: 0 auto 0.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 5rem;
+            text-align: center;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .skill-category {
+            background: rgba(21, 27, 45, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+        }
+
+        .skill-category:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Education Timeline */
+        .education-timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .education-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            opacity: 0.3;
+        }
+
+        .education-item {
+            padding-left: 4rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .education-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0.5rem;
+            width: 14px;
+            height: 14px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .education-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .education-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        .education-details {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .education-details ul {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .education-details li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            background: rgba(21, 27, 45, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 3rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(124, 58, 237, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 25px 70px rgba(0, 212, 255, 0.2);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 4px;
+            color: var(--accent-secondary);
+        }
+
+        /* Contact Section */
+        #contact {
+            background: rgba(21, 27, 45, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 6rem 4rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .contact-content h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-content p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .contact-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 1.5rem;
+            }
+
+            section {
+                padding: 5rem 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+
+            #contact {
+                padding: 4rem 2rem;
+            }
+
+            .education-item {
+                padding-left: 2.5rem;
+            }
+        }
+
+        /* Intersection Observer Animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <canvas class="neural-bg" id="neuralCanvas"></canvas>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">RM</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <header>
+            <div class="hero-content">
+                <div class="eyebrow">Applied Mathematics • Statistics</div>
+                <h1>Riley <span class="highlight">Moen</span></h1>
+                <p class="hero-subtitle">
+                    Master's graduate in Applied Mathematics and Statistics from Colorado School of Mines, 
+                    specializing in statistics, numerical methods, and data-driven solutions. 
+                    Building intelligent systems that bridge mathematical theory and real-world impact.
+                </p>
+                <div class="cta-group">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                </div>
+            </div>
+            <div class="scroll-indicator"></div>
+        </header>
+
+        <section id="about" class="fade-in-section">
+            <div class="section-header">
+                <div class="section-label">About</div>
+                <h2>Data Science Meets Mathematical Rigor</h2>
+            </div>
+            <div style="max-width: 900px; margin: 0 auto; font-size: 1.15rem; color: var(--text-secondary); line-height: 1.9; background: rgba(10, 14, 23, 0.85); backdrop-filter: blur(10px); padding: 3rem; border-radius: 16px; border: 1px solid rgba(0, 212, 255, 0.1);">
+                <p style="margin-bottom: 1.5rem;">
+                    I'm an applied mathematician with a Master's degree in Applied Mathematics and Statistics from Colorado School of Mines. 
+                    My academic journey included earning college credits while in high school and completing three degrees by age 22, reflecting a strong commitment to continuous learning and mathematical excellence.
+                </p>
+                <p style="margin-bottom: 1.5rem;">
+                    My expertise lies at the intersection of advanced mathematics, statistical analysis, and computational problem-solving. With hands-on experience 
+                    implementing neural networks, developing optimization algorithms, and applying statistical models to complex challenges, I bridge theoretical depth with practical application.
+                </p>
+                <p style="margin-bottom: 1.5rem;">
+                    I'm passionate about extracting actionable insights from data and building intelligent systems that drive real impact. Currently seeking opportunities in data science, statistical analysis, or quantitative roles where I can apply my mathematical foundation and technical expertise to solve meaningful problems.
+                </p>
+                <p style="margin-bottom: 1.5rem;">
+                    Looking ahead, I'm expanding into Actuarial Sciences and plan to complete my first two actuarial exams (FM and P) in spring 2026, positioning myself at the intersection of data science and actuarial analytics.
+                </p>
+            </div>
+        </section>
+
+        <section id="skills" class="fade-in-section">
+            <div class="section-header">
+                <div class="section-label">Technical Arsenal</div>
+                <h2>Skills & Technologies</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">MATLAB</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">R</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Git/GitHub</span>
+                        <span class="skill-tag">Linux</span>
+                        <span class="skill-tag">LaTeX</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Statistics & ML</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Statistical Modeling</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">TensorFlow</span>
+                        <span class="skill-tag">Scikit-learn</span>
+                        <span class="skill-tag">Hypothesis Testing</span>
+                        <span class="skill-tag">Regression Analysis</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-square-root-alt"></i> Mathematics & Modeling</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Numerical Linear Algebra</span>
+                        <span class="skill-tag">Stochastic Processes</span>
+                        <span class="skill-tag">Differential Equations</span>
+                        <span class="skill-tag">Optimization</span>
+                        <span class="skill-tag">Probability Theory</span>
+                        <span class="skill-tag">Time Series Analysis</span>
+                        <span class="skill-tag">Causal Inference</span>
+                        <span class="skill-tag">Experiment Design</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-cloud"></i> Cloud & Big Data</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">Google Cloud</span>
+                        <span class="skill-tag">Apache Spark</span>
+                        <span class="skill-tag">PySpark</span>
+                        <span class="skill-tag">Airflow</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Snowflake</span>
+                        <span class="skill-tag">Databricks</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-chart-line"></i> Data Science & Visualization</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">NumPy</span>
+                        <span class="skill-tag">Pandas</span>
+                        <span class="skill-tag">Matplotlib</span>
+                        <span class="skill-tag">Seaborn</span>
+                        <span class="skill-tag">Plotly</span>
+                        <span class="skill-tag">Tableau</span>
+                        <span class="skill-tag">Power BI</span>
+                        <span class="skill-tag">Streamlit</span>
+                        <span class="skill-tag">Dash</span>
+                        <span class="skill-tag">Statistical Analysis</span>
+                        <span class="skill-tag">A/B Testing</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-rocket"></i> MLOps & Deployment</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MLflow</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Model Deployment</span>
+                        <span class="skill-tag">Version Control</span>
+                        <span class="skill-tag">Reproducible Research</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-robot"></i> NLP & LLM Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Hugging Face</span>
+                        <span class="skill-tag">LangChain</span>
+                        <span class="skill-tag">OpenAI API</span>
+                        <span class="skill-tag">Fine-tuning</span>
+                        <span class="skill-tag">Prompt Engineering</span>
+                        <span class="skill-tag">Text Processing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="education" class="fade-in-section">
+            <div class="section-header">
+                <div class="section-label">Academic Journey</div>
+                <h2>Education</h2>
+            </div>
+            <div class="education-timeline">
+                <div class="education-item">
+                    <h3>Colorado School of Mines</h3>
+                    <div class="education-meta">Master of Science in Applied Mathematics & Statistics | Dec 2025</div>
+                    <div class="education-details">
+                        <p><strong>Computational and Applied Mathematics Track</strong></p>
+                        <ul>
+                            <li><strong>Key Coursework:</strong> Machine Learning, Numerical Linear Algebra, Stochastic Numerical Methods, Numerical PDEs, Parallel Scientific Computing</li>
+                            <li>Developed expertise in advanced computational methods for differential equations and linear systems</li>
+                            <li>Implemented neural networks (CNNs, LLMs) for classification tasks using PyTorch/TensorFlow</li>
+                            <li>Analyzed computational complexity vs. numerical stability in large-scale systems</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="education-item">
+                    <h3>Metropolitan State University of Denver</h3>
+                    <div class="education-meta">Bachelor of Science in Mathematics | May 2024 | GPA: 3.75</div>
+                    <div class="education-details">
+                        <p><strong>Minor in Computer Science</strong></p>
+                        <ul>
+                            <li>Focused on probability theory, differential equations, and algorithm design</li>
+                            <li>Built strong foundation in both theoretical mathematics and practical computing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="education-item">
+                    <h3>Colorado Early Colleges / Arapahoe Community College</h3>
+                    <div class="education-meta">AS Degree & High School Diploma | Aug 2018 – May 2022</div>
+                    <div class="education-details">
+                        <ul>
+                            <li><strong>Honors:</strong> Magna Cum Laude (GPA: 4.2)</li>
+                            <li>Earned Associate of Science degree (GPA: 4.0) concurrently with high school diploma</li>
+                            <li>Completed college-level math and science courses during dual-enrollment program</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="fade-in-section">
+            <div class="section-header">
+                <div class="section-label">Featured Work</div>
+                <h2>Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">🧠</div>
+                    <h3>Neural Network Classification</h3>
+                    <p class="project-description">
+                        Implemented convolutional neural networks and language models for multi-class 
+                        classification tasks, achieving high accuracy through careful architecture design 
+                        and hyperparameter tuning.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">PyTorch</span>
+                        <span class="tech-badge">TensorFlow</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">CNNs</span>
+                        <span class="tech-badge">LLMs</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">📊</div>
+                    <h3>Computational Linear Algebra</h3>
+                    <p class="project-description">
+                        Developed efficient algorithms for matrix decompositions (LU, QR) and iterative 
+                        solvers, with deep analysis of computational complexity versus numerical stability 
+                        trade-offs in large-scale systems.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">MATLAB</span>
+                        <span class="tech-badge">Numerical Methods</span>
+                        <span class="tech-badge">Algorithm Design</span>
+                        <span class="tech-badge">HPC</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">⚡</div>
+                    <h3>Stochastic Numerical Methods</h3>
+                    <p class="project-description">
+                        Applied stochastic approaches to solve complex differential equations and optimization 
+                        problems, leveraging parallel computing for scalability and performance.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Parallel Computing</span>
+                        <span class="tech-badge">Optimization</span>
+                        <span class="tech-badge">Statistical Modeling</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">🔍</div>
+                    <h3>Algorithm Design & Analysis</h3>
+                    <p class="project-description">
+                        Engineered efficient algorithms and data structures for machine learning applications, 
+                        focusing on scalability, performance analysis, and optimal time-space complexity.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Data Structures</span>
+                        <span class="tech-badge">Algorithms</span>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">Java</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="fade-in-section">
+            <div class="contact-content">
+                <div class="section-label">Let's Connect</div>
+                <h2>Get in Touch</h2>
+                <p>
+                    I'm actively seeking opportunities in data science, statistical analysis, and quantitative roles. 
+                    Let's discuss how I can contribute to your team.
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:rjmoen@outlook.com" class="contact-link">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                        rjmoen@outlook.com
+                    </a>
+                    <a href="https://www.linkedin.com/in/rileymoen/" class="contact-link" target="_blank">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Riley Moen. Built with mathematical precision and creative code.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Neural network animation
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        const nodes = [];
+        const nodeCount = 60;
+        const maxDistance = 200;
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 3 + 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(0, 212, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 212, 255, 0.7)';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Create nodes
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push(new Node());
+        }
+
+        function drawConnections() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        const opacity = 0.3 * (1 - distance / maxDistance);
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawConnections();
+            
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        // Smooth scroll with offset for fixed nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80; // Height of fixed nav
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const toggle = document.getElementById('mobileMenuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
