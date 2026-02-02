@@ -40,7 +40,7 @@ window.addEventListener('scroll', () => {
 
 // GitHub Projects Integration
 async function loadGitHubProjects() {
-    const username = 'yourusername'; // Replace with your GitHub username
+    const username = 'riley-moen';
     const projectsContainer = document.getElementById('projectsContainer');
     
     try {
